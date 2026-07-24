@@ -13,7 +13,7 @@ type Encaissement = { id: string; mandat_id: string; periode: string; honoraires
 
 function moisLabel(d: Date) { return d.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }); }
 function premierDuMois(d: Date) { return new Date(d.getFullYear(), d.getMonth(), 1); }
-function isoDate(d: Date) { return d.toISOString().slice(0, 10); }
+function isoDate(d: Date) { const m = String(d.getMonth() + 1).padStart(2, "0"); const j = String(d.getDate()).padStart(2, "0"); return `${d.getFullYear()}-${m}-${j}`; }
 
 export default function EncaissementsPage() {
   const [mois, setMois] = useState(() => premierDuMois(new Date()));

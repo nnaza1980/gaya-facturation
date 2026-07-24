@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase";
-import { formatEuros } from "@/lib/calculs";
+import { formatEuros, formatEurosCents } from "@/lib/calculs";
 
 type Mandat = {
   id: string; numero_mandat: string; nom_bailleur: string; nom_locataire: string | null;
@@ -78,7 +78,7 @@ export default function EncaissementsPage() {
     const supabase = createClient();
     const debut = isoDate(mois);
     const lignes = mandats
-      .filter((md) => !dejaSaisi[md.id]) // ne réinsère pas ceux déjà saisis
+      .filter((md) => !dejaSaisi[md.id])
       .map((md) => ({
         mandat_id: md.id,
         periode: debut,
@@ -148,7 +148,7 @@ export default function EncaissementsPage() {
                           value={saisie[md.id] ?? ""} disabled={locked}
                           onChange={(e) => setSaisie((s) => ({ ...s, [md.id]: e.target.value }))} />
                       </td>
-                      <td style={{ padding: "10px 12px", textAlign: "right", fontWeight: 700, color: "var(--gaya-green)" }}>{formatEuros(comm)}</td>
+                      <td style={{ padding: "10px 12px", textAlign: "right", fontWeight: 700, color: "var(--gaya-green)" }}>{formatEurosCents(comm)}</td>
                       <td style={{ padding: "10px 12px", textAlign: "center" }}>
                         {locked
                           ? <span style={{ fontSize: 12, color: "var(--gaya-green)", fontWeight: 600 }}>✓ enregistré</span>
@@ -162,7 +162,7 @@ export default function EncaissementsPage() {
                 <tr style={{ borderTop: "2px solid var(--gaya-green)", background: "#fafcfb" }}>
                   <td colSpan={3} style={{ padding: "11px 12px", fontWeight: 600 }}>Total du mois</td>
                   <td style={{ padding: "11px 12px", textAlign: "right", fontWeight: 700 }}>{formatEuros(totalHonoraires)}</td>
-                  <td style={{ padding: "11px 12px", textAlign: "right", fontWeight: 700, color: "var(--gaya-green)" }}>{formatEuros(totalCommissions)}</td>
+                  <td style={{ padding: "11px 12px", textAlign: "right", fontWeight: 700, color: "var(--gaya-green)" }}>{formatEurosCents(totalCommissions)}</td>
                   <td></td>
                 </tr>
               </tfoot>

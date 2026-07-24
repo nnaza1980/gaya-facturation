@@ -56,3 +56,7 @@ export function partsValides(parts: number[]): boolean {
 export function formatEuros(n: number): string {
   return n.toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
 }
+
+export function formatEurosCents(n: number): string {
+  return n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+}

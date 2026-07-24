@@ -18,7 +18,7 @@ type LigneGestion = {
 
 function moisLabel(d: Date) { return d.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }); }
 function premierDuMois(d: Date) { return new Date(d.getFullYear(), d.getMonth(), 1); }
-function isoDate(d: Date) { return d.toISOString().slice(0, 10); }
+function isoDate(d: Date) { const m = String(d.getMonth() + 1).padStart(2, "0"); const j = String(d.getDate()).padStart(2, "0"); return `${d.getFullYear()}-${m}-${j}`; }
 
 export default function RelevePage() {
   const [mois, setMois] = useState(() => premierDuMois(new Date()));
@@ -41,11 +41,13 @@ export default function RelevePage() {
     const debut = isoDate(mois);
     const finExclue = isoDate(new Date(mois.getFullYear(), mois.getMonth() + 1, 1));
 
+    // Map id -> nom pour affichage
     const nomAgent = (id: string) => {
       const a = agents.find((x) => x.id === id);
       return a ? `${a.prenom} ${a.nom}` : "—";
     };
 
+    // --- Actions ponctuelles ---
     const { data: negos } = await supabase
       .from("dossiers_negociateurs")
       .select("agent_id, part_figee, taux_indiv_fige, dossier:dossiers(id, activite, numero_mandat, nom_vendeur_bailleur, nom_acquereur_locataire, bien_adresse, honoraires_ht, statut, date_acte_ou_bail)");
@@ -69,6 +71,7 @@ export default function RelevePage() {
       });
     });
 
+    // --- Gestion ---
     const { data: enc } = await supabase
       .from("encaissements_gestion")
       .select("id, honoraires_encaisses, taux_gestion_fige, periode, mandat:mandats_gestion(numero_mandat, nom_bailleur, nom_locataire, bien_adresse, agent_apporteur_id)")
@@ -141,6 +144,7 @@ export default function RelevePage() {
         </button>
       </div>
 
+      {/* Sélecteurs */}
       <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 26, flexWrap: "wrap" }}>
         <div>
           <label className="label">Agent</label>

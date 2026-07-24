@@ -17,7 +17,7 @@ type ActiviteFiltre = "global" | "transaction" | "location";
 
 function debutMois(d: Date) { return new Date(d.getFullYear(), d.getMonth(), 1); }
 function debutAnnee(d: Date) { return new Date(d.getFullYear(), 0, 1); }
-function isoDate(d: Date) { return d.toISOString().slice(0, 10); }
+function isoDate(d: Date) { const m = String(d.getMonth() + 1).padStart(2, "0"); const j = String(d.getDate()).padStart(2, "0"); return `${d.getFullYear()}-${m}-${j}`; }
 
 export default function Leaderboard() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -37,10 +37,13 @@ export default function Leaderboard() {
   const now = new Date();
   const debut = periode === "mois" ? debutMois(now) : debutAnnee(now);
   const debutISO = isoDate(debut);
+  // borne de fin : pour le mois, fin de mois ; pour l'année, fin d'année
   const finISO = periode === "mois"
     ? isoDate(new Date(now.getFullYear(), now.getMonth() + 1, 1))
     : isoDate(new Date(now.getFullYear() + 1, 0, 1));
 
+  // Un dossier compte en "acté" via date_acte_ou_bail ; en "compromis" via date_prise_offre
+  // (compromis = signé mais pas encore acté). On classe chaque ligne dans l'un OU l'autre.
   function dansPeriode(dateStr: string | null) {
     if (!dateStr) return false;
     return dateStr >= debutISO && dateStr < finISO;
@@ -75,6 +78,7 @@ export default function Leaderboard() {
         Chiffre d&apos;affaires généré pour Gaya. Acté = encaissé ; compromis = signé, en cours.
       </p>
 
+      {/* Filtres */}
       <div style={{ display: "flex", gap: 24, marginBottom: 26, flexWrap: "wrap" }}>
         <Segmented
           label="Période"

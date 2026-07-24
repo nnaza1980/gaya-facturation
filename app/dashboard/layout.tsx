@@ -9,6 +9,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: "/dashboard/releve", label: "Relevé de facturation" },
     { href: "/dashboard/nouveau-dossier", label: "Nouveau dossier" },
     { href: "/dashboard/nouveau-mandat", label: "Nouveau mandat gestion" },
+    { href: "/dashboard/encaissements", label: "Encaissements gestion" },
   ];
 
   return (

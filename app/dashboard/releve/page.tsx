@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase";
-import { formatEuros } from "@/lib/calculs";
+import { formatEuros, formatEurosCents } from "@/lib/calculs";
 
 type Agent = { id: string; prenom: string; nom: string };
 
@@ -189,9 +189,9 @@ export default function RelevePage() {
                 rows={gestions.map((g) => [
                   ...(vueGlobale ? [g.agent] : []),
                   g.numero_mandat, g.bailleur, g.locataire || "—", g.bien,
-                  formatEuros(g.honoraires), Math.round(g.taux * 100) + " %", formatEuros(g.commission),
+                  formatEurosCents(g.honoraires), Math.round(g.taux * 100) + " %", formatEurosCents(g.commission),
                 ])}
-                totalLabel="Total commissions de gestion" totalValue={formatEuros(totalGestion)} nRight={3}
+                totalLabel="Total commissions de gestion" totalValue={formatEurosCents(totalGestion)} nRight={3}
               />
             )}
           </Section>

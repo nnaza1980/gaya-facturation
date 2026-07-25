@@ -10,6 +10,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: "/dashboard/nouveau-dossier", label: "Nouveau dossier" },
     { href: "/dashboard/nouveau-mandat", label: "Nouveau mandat gestion" },
     { href: "/dashboard/encaissements", label: "Encaissements gestion" },
+    { href: "/dashboard/taux-agents", label: "Taux des agents" },
   ];
 
   return (
